@@ -16,9 +16,11 @@ namespace PaymentGateway.Models.ViewModels
         public string MerchantId { get; set; }
 
         [Required(ErrorMessage = ApiMessages.MISSING_CARD_NUMBER)]
+        [StringLength(16, MinimumLength = 13, ErrorMessage = ApiMessages.INVALID_CARD_NUMBER)]
         public string CardNumber { get; set; }
 
         [Required(ErrorMessage = ApiMessages.MISSING_CARD_EXPIRY)]
+        [CardExpiryValidation(ErrorMessage = ApiMessages.INVALID_CARD_EXPIRY)]
         public string ExpiryMonthDate { get; set; }
 
         [Required(ErrorMessage = ApiMessages.MISSING_CURRENCY)]
