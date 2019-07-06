@@ -1,4 +1,5 @@
-﻿using PaymentGateway.Attributes;
+﻿using PaymentGateway.Annotations;
+using PaymentGateway.Attributes;
 using PaymentGateway.Models.Constants;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,7 @@ namespace PaymentGateway.Models.ViewModels
         public string Currency { get; set; }
 
         [Required(ErrorMessage = ApiMessages.MISSING_CVV_NUMBER)]
+        [CVVNumberValidation(ErrorMessage =ApiMessages.MISSING_CVV_NUMBER)]
         public string CvvNumber { get; set; }
     }
 }
