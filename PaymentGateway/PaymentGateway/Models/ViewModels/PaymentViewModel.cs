@@ -23,11 +23,11 @@ namespace PaymentGateway.Models.ViewModels
         [CardExpiryValidation(ErrorMessage = ApiMessages.INVALID_CARD_EXPIRY)]
         public string ExpiryMonthDate { get; set; }
 
+        [Required(ErrorMessage = ApiMessages.MISSING_CVV_NUMBER)]
+        [CVVNumberValidation(ErrorMessage =ApiMessages.INVALID_CVV_NUMBER)]
+        public string CvvNumber { get; set; }
+
         [Required(ErrorMessage = ApiMessages.MISSING_CURRENCY)]
         public string Currency { get; set; }
-
-        [Required(ErrorMessage = ApiMessages.MISSING_CVV_NUMBER)]
-        [CVVNumberValidation(ErrorMessage =ApiMessages.MISSING_CVV_NUMBER)]
-        public string CvvNumber { get; set; }
     }
 }
