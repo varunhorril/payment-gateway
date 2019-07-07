@@ -11,5 +11,15 @@ namespace PaymentGateway.Helpers
         {
             return string.Join("", content.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
         }
+        public static bool IsValidGuid(string guidString)
+        {
+            var isGuid = Guid.TryParse(guidString, out Guid result);
+            if (isGuid && !guidString.Equals(Guid.Empty.ToString()))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }
