@@ -14,9 +14,7 @@ namespace PaymentGateway.Helpers
 
             try
             {
-                var configValue = ConfigurationManager.AppSettings[ConfigKeys.CVV_MIN_LENGTH];
-
-                return Convert.ToInt32(configValue);
+                return Convert.ToInt32(GetFromConfig(ConfigKeys.CVV_MIN_LENGTH));
             }
             catch (Exception ex)
             {
@@ -31,9 +29,35 @@ namespace PaymentGateway.Helpers
 
             try
             {
-                var configValue = ConfigurationManager.AppSettings[ConfigKeys.CVV_MAX_LENGTH];
+                return Convert.ToInt32(GetFromConfig(ConfigKeys.CVV_MAX_LENGTH));
+            }
+            catch (Exception ex)
+            {
 
-                return Convert.ToInt32(configValue);
+            }
+
+            return fallbackValue;
+        }
+        public static int GetCardNumberMaxLength()
+        {
+            int fallbackValue = 16;
+            try
+            {
+                return Convert.ToInt32(GetFromConfig(ConfigKeys.CARD_NUM_MAX_LENGTH));
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return fallbackValue;
+        }
+        public static int GetCardNumberMinLength()
+        {
+            int fallbackValue = 13;
+            try
+            {
+                return Convert.ToInt32(GetFromConfig(ConfigKeys.CARD_NUM_MIN_LENGTH));
             }
             catch (Exception ex)
             {
@@ -43,6 +67,9 @@ namespace PaymentGateway.Helpers
             return fallbackValue;
         }
 
-
+        private static object GetFromConfig(string key)
+        {
+            return ConfigurationManager.AppSettings[key];
+        }
     }
 }

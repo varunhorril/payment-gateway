@@ -13,6 +13,7 @@ namespace PaymentGateway.Helpers
         public const string CVV_MIN_LENGTH = "CVV_MIN_LENGTH";
         public const string CVV_MAX_LENGTH = "CVV_MAX_LENGTH";
 
-
+        public const string CARD_NUM_MAX_LENGTH = "CARD_NUM_MAX_LENGTH";
+        public const string CARD_NUM_MIN_LENGTH = "CARD_NUM_MIN_LENGTH";
     }
 }
