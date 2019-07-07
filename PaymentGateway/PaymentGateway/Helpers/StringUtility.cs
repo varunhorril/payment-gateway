@@ -9,7 +9,7 @@ namespace PaymentGateway.Helpers
     {
         public static string RemoveWhitespace(string content)
         {
-            return content;
+            return string.Join("", content.Split(default(string[]), StringSplitOptions.RemoveEmptyEntries));
         }
     }
 }
