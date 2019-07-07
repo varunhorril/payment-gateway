@@ -7,6 +7,9 @@ using System.Web.Http.Filters;
 
 namespace PaymentGateway.Attributes
 {
+    /// <summary>
+    /// Checks Basic Auth of request to validate merchant.
+    /// </summary>
     public class MerchantValidationAttribute : ActionFilterAttribute
     {
         public override void OnActionExecuting(HttpActionContext actionContext)

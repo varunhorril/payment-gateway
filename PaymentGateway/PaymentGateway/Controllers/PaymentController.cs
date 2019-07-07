@@ -1,4 +1,5 @@
 ﻿using PaymentGateway.Attributes;
+using PaymentGateway.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace PaymentGateway.Controllers
         [HttpPost]
         [Route("Payment")]
         [MerchantValidation]
-        public IHttpActionResult Pay()
+        public IHttpActionResult Pay(PaymentViewModel payment)
         {
             try
             {
