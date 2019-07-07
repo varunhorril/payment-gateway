@@ -17,7 +17,7 @@ namespace PaymentGateway.Controllers
         [HttpGet]
         public IHttpActionResult Ping()
         {
-
+            
             return Ok("Service is UP!");
         }
     }
