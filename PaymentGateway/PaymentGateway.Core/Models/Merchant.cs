@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace PaymentGateway.Core.Models
 {
-    class Merchant
+    public class Merchant : AuditBase
     {
+        public Guid MerchantId { get; set; }
+        public string Name { get; set; }
+        public string CountryOfRegistration { get; set; }
+        public DateTime RegistrationExpiry { get; set; }
     }
 }
