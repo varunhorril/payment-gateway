@@ -56,7 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAL\BaseRepository.cs" />
+    <Compile Include="DAL\PaymentGatewayContext.cs" />
+    <Compile Include="DAL\Repositories\BankRepository.cs" />
+    <Compile Include="DAL\Repositories\CardRepository.cs" />
+    <Compile Include="DAL\Repositories\CardTypeRepository.cs" />
+    <Compile Include="DAL\Repositories\MerchantRepository.cs" />
+    <Compile Include="DAL\Repositories\PaymentRepository.cs" />
+    <Compile Include="DAL\Repositories\ShopperRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -70,5 +76,6 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

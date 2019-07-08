@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\RepositoryException.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\Base\AuditBase.cs" />
     <Compile Include="Models\Card.cs" />

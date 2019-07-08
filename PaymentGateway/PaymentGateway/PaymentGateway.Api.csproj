@@ -110,6 +110,7 @@
     <Compile Include="Models\Constants\Response.cs" />
     <Compile Include="Models\ViewModels\PaymentViewModel.cs" />
     <Compile Include="Modules\Card\CardValidationModule.cs" />
+    <Compile Include="Modules\Merchant\MerchantAuthValidationModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +134,10 @@
     <ProjectReference Include="..\PaymentGateway.Api.Infrastructure\PaymentGateway.Api.Infrastructure.csproj">
       <Project>{ee08c1dd-fce6-469c-ba22-ee3a3c39de44}</Project>
       <Name>PaymentGateway.Api.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PaymentGateway.Core\PaymentGateway.Api.Core.csproj">
+      <Project>{7EE3A7C6-20BF-48C8-97B2-B4EA2E150F15}</Project>
+      <Name>PaymentGateway.Api.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
