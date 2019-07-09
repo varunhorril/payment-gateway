@@ -8,6 +8,7 @@ using PaymentGateway.Helpers;
 using PaymentGateway.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -28,7 +29,6 @@ namespace PaymentGateway.Modules.Payment
         public Core.Models.Shopper Shopper { get; set; }
         public Core.Models.Merchant Merchant { get; set; }
 
-
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private static readonly HttpClient _httpClient = new HttpClient();
         private const string BASIC_AUTH_SCHEME = "Basic";
@@ -46,7 +46,7 @@ namespace PaymentGateway.Modules.Payment
 
                     var httpResponse = await _httpClient.SendAsync(httpRequest);
 
-                    response = HandleResponse(httpResponse);
+                    response = await HandleResponse(httpResponse);
                 }
             }
             catch (WebException webEx)
@@ -61,19 +61,19 @@ namespace PaymentGateway.Modules.Payment
             return response;
         }
 
-        public IResponseBase HandleResponse(HttpResponseMessage httpResponse)
+        public async Task<IResponseBase> HandleResponse(HttpResponseMessage httpResponse)
         {
-            var result = new Response();
+            IResponseBase result = new Response();
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            var clientResponse = JsonConvert.DeserializeObject<ClientResponse>(responseString);
 
             if (!httpResponse.IsSuccessStatusCode)
             {
-                UpdatePaymentStatus();
+                UpdatePayment(clientResponse);
                 return result;
             }
 
-            UpdatePaymentStatus(true);
-            var test = httpResponse.Content.ReadAsStringAsync();
-
+            UpdatePayment(clientResponse, true);
 
             return result;
         }
@@ -89,7 +89,7 @@ namespace PaymentGateway.Modules.Payment
 
         public string GetBankApiEndpoint()
         {
-            throw new NotImplementedException();
+            return ConfigHelper.GetApiClientUrl();
         }
 
         public string EncryptRequestContent()
@@ -122,12 +122,13 @@ namespace PaymentGateway.Modules.Payment
             return ConfigHelper.GetAuthPass();
         }
 
-        private void UpdatePaymentStatus(bool isSuccess = false)
+        private void UpdatePayment(ClientResponse clientResponse, bool isSuccess = false)
         {
             try
             {
                 var paymentRepository = new PaymentRepository();
                 var payment = paymentRepository.GetById(Payment.PaymentId);
+                payment.TransactionId = clientResponse.TransactionId;
                 payment.PaymentRelayStatus = (isSuccess) ? PaymentRelayStatuses.SUCCESS
                                                          : PaymentRelayStatuses.FAILED;
 

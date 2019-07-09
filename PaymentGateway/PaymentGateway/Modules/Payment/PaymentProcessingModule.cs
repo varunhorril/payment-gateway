@@ -30,8 +30,10 @@ namespace PaymentGateway.Modules.Payment
                 var payment = new Core.Models.Payment()
                 {
                     PaymentId = paymentId,
+                    MerchantId = Merchant.MerchantId,
                     BankId = Bank.BankId,
                     ShopperId = Shopper.ShopperId,
+                    TransactionId = string.Empty,
                     PaymentRelayStatus = PaymentRelayStatuses.PENDING
                 };
 
