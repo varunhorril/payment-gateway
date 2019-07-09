@@ -19,10 +19,7 @@ namespace PaymentGateway.Modules.Merchant
 
         public IResponseBase Process()
         {
-            var response = new Response
-            {
-                IsSuccessful = false
-            };
+            var response = new Response();
 
             try
             {
