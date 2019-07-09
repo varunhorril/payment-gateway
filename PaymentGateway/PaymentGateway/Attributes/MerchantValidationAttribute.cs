@@ -26,7 +26,7 @@ namespace PaymentGateway.Attributes
             var authHeaderValue = actionContext.Request.Headers.Authorization;
             if (!IsAuthHeaderValid(authHeaderValue))
             {
-                actionContext.Response.StatusCode = HttpStatusCode.Forbidden;
+                actionContext.Response.StatusCode = HttpStatusCode.Unauthorized;
                 actionContext.Response.Content = new StringContent(ApiMessages.AUTH_FAILED);
 
                 return;
