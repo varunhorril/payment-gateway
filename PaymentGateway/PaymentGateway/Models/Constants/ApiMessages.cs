@@ -18,6 +18,8 @@ namespace PaymentGateway.Models.Constants
         public const string MISSING_CURRENCY = "MISSING_CURRENCY";
         public const string MISSING_CVV_NUMBER = "MISSING_CVV_NUMBER";
         public const string MISSING_CARD_ISSUER_NAME = "MISSING_CARD_ISSUER_NAME";
+        public const string MISSING_BANK_NAME = "MISSING_BANK_NAME";
+
         #endregion
 
         #region Validity-check Messages
@@ -28,6 +30,8 @@ namespace PaymentGateway.Models.Constants
         public const string INVALID_CARD_EXPIRY = "INVALID_CARD_EXPIRY";
         public const string INVALID_CURRENCY = "INVALID_CURRENCY";
         public const string INVALID_CARD_ISSUER_NAME = "INVALID_CARD_ISSUER_NAME";
+        public const string INVALID_BANK_NAME = "INVALID_BANK_NAME";
+
         #endregion
 
         public const string OK = "OK";

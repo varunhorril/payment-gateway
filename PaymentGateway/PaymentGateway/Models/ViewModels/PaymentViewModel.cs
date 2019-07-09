@@ -30,7 +30,14 @@ namespace PaymentGateway.Models.ViewModels
         [Required(ErrorMessage = ApiMessages.MISSING_CURRENCY)]
         public string Currency { get; set; }
 
+        [Required(ErrorMessage = ApiMessages.MISSING_AMOUNT)]
+        [AmountDueValidation(ErrorMessage = ApiMessages.INVALID_AMOUNT)]
+        public decimal Amount { get; set; }
+
         [Required(ErrorMessage = ApiMessages.MISSING_CURRENCY)]
         public string CardIssuerName { get; set; }
+
+        [Required(ErrorMessage = ApiMessages.MISSING_BANK_NAME)]
+        public string BankName { get; set; }
     }
 }
