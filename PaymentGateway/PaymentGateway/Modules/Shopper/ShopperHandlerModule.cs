@@ -20,6 +20,8 @@ namespace PaymentGateway.Modules.Shopper
         public string CardNumber { get; set; }
         public decimal AmountDue { get; set; }
         public string Currency { get; set; }
+        public string CVVNumber { get; set; }
+        public string CardExpiry { get; set; }
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
         private ShopperRepository repository = new ShopperRepository();
@@ -62,7 +64,9 @@ namespace PaymentGateway.Modules.Shopper
                     Amount = AmountDue,
                     CardNumber = CardNumber,
                     Currency = Currency,
-                    CardId = Guid.Parse(CardId)
+                    CardId = Guid.Parse(CardId),
+                    CardExpiry = CardExpiry,
+                    CVVNumber = CVVNumber
                 };
 
                 repository.Insert(shopper);
@@ -71,7 +75,7 @@ namespace PaymentGateway.Modules.Shopper
             catch (Exception ex)
             {
                 _logger.Error(ex, $"[ShopperHandlerModule][GetShopper] : {ex.Message}");
-                throw;
+                throw ex;
             }
         }
 
