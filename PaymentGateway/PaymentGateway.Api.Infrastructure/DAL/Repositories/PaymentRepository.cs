@@ -56,6 +56,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
+                    entity.CreatedOn = DateTime.UtcNow;
                     context.Payments.Add(entity);
                     context.SaveChanges();
                 }
@@ -74,6 +75,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
+                    entity.UpdatedOn = DateTime.UtcNow;
                     context.Entry(entity).State = EntityState.Modified;
                     context.SaveChanges();
                 }
