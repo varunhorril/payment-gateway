@@ -13,6 +13,7 @@ namespace PaymentGateway.Core.Models
         public Guid BankId { get; set; }
         public Guid ShopperId { get; set; }
         public DateTime TransactionTimeUtc { get; set; }
+        public string TransactionId { get; set; }
         public string PaymentRelayStatus { get; set; }
 
     }
