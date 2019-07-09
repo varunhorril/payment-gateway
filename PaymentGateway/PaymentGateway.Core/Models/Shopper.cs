@@ -13,5 +13,8 @@ namespace PaymentGateway.Core.Models
         public string CardNumber { get; set; }
         public decimal Amount { get; set; }
         public string Currency { get; set; }
+        public string CVVNumber { get; set; }
+        public string CardExpiry { get; set; }
+
     }
 }
