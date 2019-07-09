@@ -29,5 +29,8 @@ namespace PaymentGateway.Models.ViewModels
 
         [Required(ErrorMessage = ApiMessages.MISSING_CURRENCY)]
         public string Currency { get; set; }
+
+        [Required(ErrorMessage = ApiMessages.MISSING_CURRENCY)]
+        public string CardIssuerName { get; set; }
     }
 }
