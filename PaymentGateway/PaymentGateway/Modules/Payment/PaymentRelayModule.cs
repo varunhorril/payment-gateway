@@ -20,7 +20,7 @@ using System.Web;
 namespace PaymentGateway.Modules.Payment
 {
     /// <summary>
-    /// Sends payment to bank API Endpoint
+    /// Sends payment asynchronously to client API Endpoint
     /// </summary>
     public class PaymentRelayModule : IPaymentRelayBase
     {

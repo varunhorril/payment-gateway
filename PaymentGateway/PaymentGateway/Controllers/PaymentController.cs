@@ -6,6 +6,7 @@ using PaymentGateway.Models.ViewModels;
 using PaymentGateway.Modules.Bank;
 using PaymentGateway.Modules.Card;
 using PaymentGateway.Modules.Merchant;
+using PaymentGateway.Modules.Payment;
 using PaymentGateway.Modules.Shopper;
 using System;
 using System.Collections.Generic;
@@ -25,14 +26,14 @@ namespace PaymentGateway.Controllers
         [HttpPost]
         [Route("Payment")]
         [MerchantValidation]
-        public IHttpActionResult Pay(PaymentViewModel payment)
+        public IHttpActionResult Pay(PaymentViewModel paymentRequest)
         {
             var apiResponse = new ApiResponse();
 
             try
             {
 
-                var merchantProcess = new GetMerchantModule(payment.MerchantId).Process();
+                var merchantProcess = new GetMerchantModule(paymentRequest.MerchantId).Process();
                 if (!merchantProcess.IsSuccessful)
                 {
                     apiResponse.StatusCode = HttpStatusCode.BadRequest;
@@ -43,7 +44,7 @@ namespace PaymentGateway.Controllers
 
                 Merchant merchant = (Merchant)merchantProcess.Data;
 
-                var bankProcess = new GetBankModule(payment.BankName).Process();
+                var bankProcess = new GetBankModule(paymentRequest.BankName).Process();
                 if (!bankProcess.IsSuccessful)
                 {
                     apiResponse.StatusCode = HttpStatusCode.BadRequest;
@@ -54,12 +55,11 @@ namespace PaymentGateway.Controllers
 
                 Bank bank = (Bank)bankProcess.Data;
 
-                var cardValidation = new CardProcessingModule()
+                var cardProcess = new CardProcessingModule()
                 {
-                    CardNumber = payment.CardNumber
-                };
+                    CardNumber = paymentRequest.CardNumber
 
-                var cardProcess = cardValidation.Process();
+                }.Process();
 
                 if (!cardProcess.IsSuccessful)
                 {
@@ -71,15 +71,17 @@ namespace PaymentGateway.Controllers
 
                 Card card = (Card)cardProcess.Data;
 
-                var shopperHandler = new ShopperHandlerModule()
+                var shopperProcess = new ShopperHandlerModule()
                 {
                     CardId = card.CardId.ToString(),
-                    CardNumber = payment.CardNumber,
-                    Currency = payment.Currency,
-                    AmountDue = payment.Amount
-                };
+                    CardNumber = paymentRequest.CardNumber,
+                    Currency = paymentRequest.Currency,
+                    AmountDue = paymentRequest.Amount,
+                    CardExpiry = paymentRequest.ExpiryMonthDate,
+                    CVVNumber = paymentRequest.CvvNumber
 
-                var shopperProcess = shopperHandler.Process();
+                }.Process();
+
                 if (!shopperProcess.IsSuccessful)
                 {
                     apiResponse.StatusCode = HttpStatusCode.InternalServerError;
@@ -90,17 +92,50 @@ namespace PaymentGateway.Controllers
 
                 Shopper shopper = (Shopper)shopperProcess.Data;
 
-                
+                var paymentProcessing = new PaymentProcessingModule()
+                {
+                    Bank = bank,
+                    Shopper = shopper,
+                    Merchant = merchant
 
+                }.Process();
+
+                if (!paymentProcessing.IsSuccessful)
+                {
+                    apiResponse.StatusCode = HttpStatusCode.InternalServerError;
+                    apiResponse.Content = ApiMessages.SERVER_ERROR;
+
+                    return apiResponse;
+                }
+
+                Payment payment = (Payment)paymentProcessing.Data;
+
+                var paymentRelay = new PaymentRelayModule()
+                {
+                    Payment = payment,
+                    Merchant = merchant,
+                    Shopper = shopper,
+                    Card = card
+
+                }.Relay().Result;
+
+                if (paymentRelay.IsSuccessful)
+                {
+                    apiResponse.Content = payment.PaymentId.ToString();
+                    apiResponse.StatusCode = HttpStatusCode.OK;
+
+                    return apiResponse;
+                }
 
             }
             catch (Exception ex)
             {
                 _logger.Error(ex, $"[PaymentController][Pay] FAILED : {ex.Message}");
 
-                apiResponse.Content = ApiMessages.SERVER_ERROR;
-                apiResponse.StatusCode = HttpStatusCode.InternalServerError;
             }
+
+            apiResponse.Content = ApiMessages.SERVER_ERROR;
+            apiResponse.StatusCode = HttpStatusCode.InternalServerError;
 
             return apiResponse;
         }

@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\RelayException.cs" />
     <Compile Include="Exceptions\RepositoryException.cs" />
     <Compile Include="Models\Bank.cs" />
     <Compile Include="Models\Base\AuditBase.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Models\CardType.cs" />
     <Compile Include="Models\Merchant.cs" />
     <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaymentRelay.cs" />
     <Compile Include="Models\Shopper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
