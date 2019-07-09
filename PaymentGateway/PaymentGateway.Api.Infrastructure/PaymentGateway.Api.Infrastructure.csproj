@@ -64,6 +64,7 @@
     <Compile Include="DAL\Repositories\PaymentRepository.cs" />
     <Compile Include="DAL\Repositories\ShopperRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
