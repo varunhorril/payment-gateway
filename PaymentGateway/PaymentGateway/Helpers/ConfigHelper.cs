@@ -72,6 +72,40 @@ namespace PaymentGateway.Helpers
             return fallbackValue;
         }
 
+        public static string GetAuthUser()
+        {
+            var user = string.Empty;
+
+            try
+            {
+                return GetFromConfig(ConfigKeys.AUTH_USER).ToString();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "[ConfigHelper][GetAuthUser] : Value not present in Web.config.");
+            }
+
+            return user;
+        }
+
+        public static string GetAuthPass()
+        {
+            var pass = string.Empty;
+
+            try
+            {
+                return GetFromConfig(ConfigKeys.AUTH_PASS).ToString();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "[ConfigHelper][GetAuthPass] : Value not present in Web.config.");
+            }
+
+            return pass;
+        }
+
         private static object GetFromConfig(string key)
         {
             return ConfigurationManager.AppSettings[key];
