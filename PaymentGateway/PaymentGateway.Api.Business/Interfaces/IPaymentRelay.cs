@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PaymentGateway.Core.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace PaymentGateway.Api.Business.Interfaces
 {
     public interface IPaymentRelay
     {
+        Payment Payment { get; set; }
         IResponseBase Relay();
         IResponseBase HandleResponse();
         string GetBankApiEndpoint();
