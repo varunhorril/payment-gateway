@@ -19,5 +19,7 @@ namespace PaymentGateway.Helpers
         public const string AUTH_USER = "AUTH_USER";
         public const string AUTH_PASS = "AUTH_PASS";
 
+        public const string API_CLIENT_URL = "ApiClientUrl";
+
     }
 }

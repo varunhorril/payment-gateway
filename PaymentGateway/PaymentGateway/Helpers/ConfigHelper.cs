@@ -71,7 +71,6 @@ namespace PaymentGateway.Helpers
 
             return fallbackValue;
         }
-
         public static string GetAuthUser()
         {
             var user = string.Empty;
@@ -88,11 +87,8 @@ namespace PaymentGateway.Helpers
 
             return user;
         }
-
         public static string GetAuthPass()
         {
-            var pass = string.Empty;
-
             try
             {
                 return GetFromConfig(ConfigKeys.AUTH_PASS).ToString();
@@ -103,7 +99,22 @@ namespace PaymentGateway.Helpers
                 _logger.Warn(ex, "[ConfigHelper][GetAuthPass] : Value not present in Web.config.");
             }
 
-            return pass;
+            return string.Empty;
+        }
+        public static string GetApiClientUrl()
+        {
+            try
+            {
+                return GetFromConfig(ConfigKeys.API_CLIENT_URL).ToString();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, "[ConfigHelper][GetApiClientUrl] : " +
+                            "API Client URL not present in Web.config.");
+            }
+
+            return string.Empty;
         }
 
         private static object GetFromConfig(string key)
