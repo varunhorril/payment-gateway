@@ -1,4 +1,6 @@
-﻿using PaymentGateway.Api.Business.Interfaces;
+﻿using NLog;
+using PaymentGateway.Api.Business.Interfaces;
+using PaymentGateway.Api.Infrastructure.DAL.Repositories;
 using PaymentGateway.Helpers;
 using PaymentGateway.Models.Constants;
 using System;
@@ -11,20 +13,20 @@ namespace PaymentGateway.Modules.Card
     /// <summary>
     /// Validates card number for length check & against Luhn's Algorithm.
     /// </summary>
-    public class CardValidationModule : IModuleBase
+    public class CardProcessingModule : IModuleBase
     {
         public string CardNumber { get; set; }
+        public string CardIssuerName { get; set; }
 
         private int MaxCardNumberLength { get; set; }
         private int MinCardNumberLength { get; set; }
         private int MajorIndustryIdentifier { get; set; }
 
-        private List<int> MIIValidNumbers = new List<int>()
-        {
-            4, 5, 6
-        };
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-        public CardValidationModule()
+        private CardRepository CardRepository = new CardRepository();
+
+        public CardProcessingModule()
         {
             MaxCardNumberLength = ConfigHelper.GetCardNumberMaxLength();
             MinCardNumberLength = ConfigHelper.GetCardNumberMinLength();
@@ -32,10 +34,7 @@ namespace PaymentGateway.Modules.Card
 
         public IResponseBase Process()
         {
-            var response = new Response()
-            {
-                IsSuccessful = false
-            };
+            var response = new Response();
 
             try
             {
@@ -46,11 +45,30 @@ namespace PaymentGateway.Modules.Card
                     {
                         response.IsSuccessful = true;
                     }
+
+                    var card = GetCard();
+                    if (card == null)
+                    {
+                        response.IsSuccessful = false;
+                        response.Message = ApiMessages.INVALID_CARD_ISSUER_NAME;
+                    }
+                    else
+                    {
+                        response.Message = ApiMessages.OK;
+                        response.Data = card;
+                    }
+
+                    return response;
                 }
+
+                response.Message = ApiMessages.INVALID_CARD_NUMBER;
+
+                return response;
             }
             catch (Exception ex)
             {
-
+                _logger.Error(ex, $"[CardValidationModule][Process][FAILED] : {ex.Message}");
+                response.Message = ApiMessages.SERVER_ERROR;
             }
 
             return response;
@@ -83,7 +101,7 @@ namespace PaymentGateway.Modules.Card
 
         private bool IsMIIValid()
         {
-            return MIIValidNumbers.Any(m => m.Equals(MajorIndustryIdentifier));
+            return GetValidMIIList().Any(m => m.Equals(MajorIndustryIdentifier));
         }
 
         private string RemoveCheckSum()
@@ -91,6 +109,19 @@ namespace PaymentGateway.Modules.Card
             return CardNumber.Substring(0, CardNumber.Length - 1);
         }
 
+        private List<int> GetValidMIIList()
+        {
+            return new List<int>()
+            {
+                4, 5, 6
+            };
+        }
+
         #endregion
+
+        private Core.Models.Card GetCard()
+        {
+            return CardRepository.GetCardByIssuer(CardIssuerName);
+        }
     }
 }
