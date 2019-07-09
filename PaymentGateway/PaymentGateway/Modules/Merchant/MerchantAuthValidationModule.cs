@@ -1,4 +1,5 @@
-﻿using NLog;
+﻿using HashidsNet;
+using NLog;
 using PaymentGateway.Api.Business.Interfaces;
 using PaymentGateway.Api.Infrastructure.DAL.Repositories;
 using PaymentGateway.Models.Constants;
@@ -16,7 +17,6 @@ namespace PaymentGateway.Modules.Merchant
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
-
         public IResponseBase Process()
         {
             var response = new Response
@@ -31,11 +31,9 @@ namespace PaymentGateway.Modules.Merchant
                     var merchant = new MerchantRepository().GetById(Guid.Parse(MerchantUserId));
                     if (merchant != null && HasPasswordMatched(merchant))
                     {
-                        
+                        response.IsSuccessful = true;
                     }
-
                 }
-
 
             }
             catch (Exception ex)
@@ -48,7 +46,15 @@ namespace PaymentGateway.Modules.Merchant
 
         private bool HasPasswordMatched(Core.Models.Merchant merchant)
         {
+            var hashIDs = new Hashids(merchant.AuthSalt);
+            var hash = hashIDs.EncodeLong(Convert.ToInt64(merchant.MerchantId));
 
+            if (hash.Equals(HashId))
+            {
+                return true;
+            }
+
+            return false;
         }
     }
 }

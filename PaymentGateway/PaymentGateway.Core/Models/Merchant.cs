@@ -9,7 +9,7 @@ namespace PaymentGateway.Core.Models
     public class Merchant : AuditBase
     {
         public Guid MerchantId { get; set; }
-        public Guid AuthSalt { get; set; }
+        public string AuthSalt { get; set; }
         public string Name { get; set; }
         public string CountryOfRegistration { get; set; }
         public DateTime RegistrationExpiry { get; set; }
