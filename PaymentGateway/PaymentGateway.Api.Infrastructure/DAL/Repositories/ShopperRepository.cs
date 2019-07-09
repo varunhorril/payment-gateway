@@ -15,6 +15,25 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public Shopper GetShopperByCardNumber(string cardNumber)
+        {
+            try
+            {
+                using (var context = new PaymentGatewayContext())
+                {
+                    return context.Shoppers.Where(s => s.CardNumber
+                                           .Equals(cardNumber, StringComparison.OrdinalIgnoreCase))
+                                           .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"[ShopperRepository][GetShopperByCardNumber][FAILED] : {ex.Message}");
+            }
+
+            return null;
+        }
+
         public IEnumerable<Shopper> GetAll()
         {
             try
@@ -56,6 +75,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
+                    entity.CreatedOn = DateTime.UtcNow;
                     context.Shoppers.Add(entity);
                     context.SaveChanges();
                 }
@@ -74,6 +94,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
+                    entity.UpdatedOn = DateTime.UtcNow;
                     context.Entry(entity).State = EntityState.Modified;
                     context.SaveChanges();
                 }

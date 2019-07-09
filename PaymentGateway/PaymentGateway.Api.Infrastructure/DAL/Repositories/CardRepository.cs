@@ -15,6 +15,25 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public Card GetCardByIssuer(string issuerName)
+        {
+            try
+            {
+                using (var context = new PaymentGatewayContext())
+                {
+                    return context.Cards.Where(c => c.IssuerName
+                                        .Equals(issuerName, StringComparison.OrdinalIgnoreCase))
+                                        .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"[CardRepository][GetCardByIssuer] : {ex.Message}");
+            }
+
+            return null;
+        }
+
         public IEnumerable<Card> GetAll()
         {
             try
