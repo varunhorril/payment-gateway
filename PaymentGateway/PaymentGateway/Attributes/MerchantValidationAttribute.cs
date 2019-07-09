@@ -1,5 +1,6 @@
 ﻿using NLog;
 using PaymentGateway.Models.Constants;
+using PaymentGateway.Modules.Merchant;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace PaymentGateway.Attributes
     /// </summary>
     public class MerchantValidationAttribute : ActionFilterAttribute
     {
+        private static Logger _logger = LogManager.GetCurrentClassLogger();
+
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
             var authHeaderValue = actionContext.Request.Headers.Authorization;
@@ -43,11 +46,19 @@ namespace PaymentGateway.Attributes
                     return false;
                 }
 
+                var merchantValidation = new MerchantAuthValidationModule()
+                {
+                    MerchantUserId = authValues[0],
+                    HashId = authValues[1]
+                };
 
+                return merchantValidation.Process().IsSuccessful;
 
             }
             catch (Exception ex)
             {
+                _logger.Error(ex, $"[MerchantValidationAttribute][IsAuthHeaderValid][FAILED] {ex.Message}");
+
                 return false;
             }
         }
