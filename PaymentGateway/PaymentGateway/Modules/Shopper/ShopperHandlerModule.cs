@@ -18,7 +18,7 @@ namespace PaymentGateway.Modules.Shopper
     {
         public string CardId { get; set; }
         public string CardNumber { get; set; }
-        public string AmountDue { get; set; }
+        public decimal AmountDue { get; set; }
         public string Currency { get; set; }
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
@@ -59,7 +59,7 @@ namespace PaymentGateway.Modules.Shopper
                 shopper = new Core.Models.Shopper()
                 {
                     ShopperId = newShopperId,
-                    Amount = Convert.ToInt32(AmountDue),
+                    Amount = AmountDue,
                     CardNumber = CardNumber,
                     Currency = Currency,
                     CardId = Guid.Parse(CardId)
