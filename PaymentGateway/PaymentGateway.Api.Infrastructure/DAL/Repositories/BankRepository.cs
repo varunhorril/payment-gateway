@@ -15,6 +15,25 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public Bank GetBankByName(string name)
+        {
+            try
+            {
+                using (var context = new PaymentGatewayContext())
+                {
+                    return context.Banks.Where(b => b.Name
+                                        .Equals(name, StringComparison.OrdinalIgnoreCase))
+                                        .FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex, $"[BankRepository][GetBankByName]: FAIL {ex.Message}");
+            }
+
+            return null;
+        }
+
         public IEnumerable<Bank> GetAll()
         {
             try
