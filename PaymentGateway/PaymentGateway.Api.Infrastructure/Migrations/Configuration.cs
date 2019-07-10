@@ -17,21 +17,21 @@ namespace PaymentGateway.Api.Infrastructure.Migrations
         {
             var seedHelper = new SeedHelper();
 
-            seedHelper.PopulateBanks()
-                      .ToList()
-                      .ForEach(b => context.Banks.Add(b));
+            //seedHelper.PopulateBanks()
+            //          .ToList()
+            //          .ForEach(b => context.Banks.Add(b));
 
-            seedHelper.PopulateCardTypes()
-                      .ToList()
-                      .ForEach(ct => context.CardTypes.Add(ct));
+            //seedHelper.PopulateCardTypes()
+            //          .ToList()
+            //          .ForEach(ct => context.CardTypes.Add(ct));
 
-            seedHelper.PopulateMerchants()
-                      .ToList()
-                      .ForEach(m => context.Merchants.Add(m));
+            //seedHelper.PopulateMerchants()
+            //          .ToList()
+            //          .ForEach(m => context.Merchants.Add(m));
 
-            seedHelper.PopulateCards()
-                      .ToList()
-                      .ForEach(c => context.Cards.Add(c));
+            //seedHelper.PopulateCards()
+            //          .ToList()
+            //          .ForEach(c => context.Cards.Add(c));
 
             base.Seed(context);
         }
