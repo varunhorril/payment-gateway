@@ -43,27 +43,23 @@ namespace PaymentGateway.Modules.Card
                     MajorIndustryIdentifier = Convert.ToInt32(CardNumber.Substring(0, 1));
                     if (IsMIIValid() && HasPassedLuhnValidation())
                     {
-                        response.IsSuccessful = true;
-                    }
+                        var card = GetCard();
+                        if (card == null)
+                        {
+                            response.Message = ApiMessages.INVALID_CARD_ISSUER_NAME;
+                        }
+                        else
+                        {
+                            response.IsSuccessful = true;
+                            response.Message = ApiMessages.OK;
+                            response.Data = card;
+                        }
 
-                    var card = GetCard();
-                    if (card == null)
-                    {
-                        response.IsSuccessful = false;
-                        response.Message = ApiMessages.INVALID_CARD_ISSUER_NAME;
+                        return response;
                     }
-                    else
-                    {
-                        response.Message = ApiMessages.OK;
-                        response.Data = card;
-                    }
-
-                    return response;
                 }
 
                 response.Message = ApiMessages.INVALID_CARD_NUMBER;
-
-                return response;
             }
             catch (Exception ex)
             {
@@ -83,20 +79,55 @@ namespace PaymentGateway.Modules.Card
 
         private bool HasPassedLuhnValidation()
         {
-            int sum = 0;
-            var cardArray = RemoveCheckSum().ToCharArray();
-            foreach (var value in cardArray)
+            try
             {
-                var doubledVal = Convert.ToInt32(value) * 2;
-                if (doubledVal > 9)
+                int sum = 0;
+                var cardArray = CardNumber.ToArray().ToList();
+                var valuesToDouble = new List<string>();
+                var valuesNotDoubled = new List<string>();
+
+                for (int i = 0; i < cardArray.Count(); i++)
                 {
-                    doubledVal -= 9;
+                    if (i % 2 == 0)
+                    {
+                        valuesToDouble.Add(cardArray[i].ToString());
+                    }
+                    else
+                    {
+                        valuesNotDoubled.Add(cardArray[i].ToString());
+                    }
                 }
 
-                sum += doubledVal;
+
+                foreach (var value in valuesToDouble)
+                {
+                    var doubledVal = Convert.ToInt32(value) * 2;
+                    if (doubledVal > 9)
+                    {
+                        doubledVal -= 9;
+                    }
+
+                    sum += doubledVal;
+                }
+
+                foreach (var value in valuesNotDoubled)
+                {
+                    sum += Convert.ToInt32(value);
+                }
+
+                return sum % 10 == 0;
+
+            }
+            catch (IndexOutOfRangeException indexExp)
+            {
+                _logger.Warn(indexExp, $"[CardProcessingModule][Luhn Validation] Index out of bounds : {indexExp.Message}");
+            }
+            catch (Exception ex)
+            {
+                _logger.Warn(ex, $"[CardProcessingModule][Luhn Validation] Index out of bounds : {ex.Message}");
             }
 
-            return sum % 10 == 0;
+            return false;
         }
 
         private bool IsMIIValid()

@@ -43,8 +43,8 @@ namespace PaymentGateway.Modules.Merchant
 
         private bool HasPasswordMatched(Core.Models.Merchant merchant)
         {
-            var hashIDs = new Hashids(merchant.AuthSalt);
-            var hash = hashIDs.EncodeLong(Convert.ToInt64(merchant.MerchantId));
+            var hashIDs = new Hashids(merchant.AuthSalt, 10);
+            var hash = hashIDs.Encode(merchant.AuthIdentifier);
 
             if (hash.Equals(HashId))
             {
