@@ -73,6 +73,10 @@
     <Compile Include="Migrations\201907100523405_NullableUpdatedOnField.Designer.cs">
       <DependentUpon>201907100523405_NullableUpdatedOnField.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907100652087_Seeding.cs" />
+    <Compile Include="Migrations\201907100652087_Seeding.Designer.cs">
+      <DependentUpon>201907100652087_Seeding.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907100523405_NullableUpdatedOnField.resx">
       <DependentUpon>201907100523405_NullableUpdatedOnField.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907100652087_Seeding.resx">
+      <DependentUpon>201907100652087_Seeding.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
