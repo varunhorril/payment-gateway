@@ -5,6 +5,7 @@ using PaymentGateway.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,6 +97,12 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
                     context.Entry(entity).State = EntityState.Modified;
                     context.SaveChanges();
                 }
+            }
+            catch (DbUpdateConcurrencyException dbExp)
+            {
+                logger.Warn(dbExp, $"[DbUpdateConcurency][BankRepository] : {dbExp.Message}");
+
+                throw dbExp;
             }
             catch (RepositoryException ex)
             {
