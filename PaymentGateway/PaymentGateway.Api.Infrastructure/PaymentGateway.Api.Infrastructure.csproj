@@ -64,6 +64,14 @@
     <Compile Include="DAL\Repositories\PaymentRepository.cs" />
     <Compile Include="DAL\Repositories\ShopperRepository.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Migrations\201907100517407_Initial.cs" />
+    <Compile Include="Migrations\201907100517407_Initial.Designer.cs">
+      <DependentUpon>201907100517407_Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907100523405_NullableUpdatedOnField.cs" />
+    <Compile Include="Migrations\201907100523405_NullableUpdatedOnField.Designer.cs">
+      <DependentUpon>201907100523405_NullableUpdatedOnField.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -77,6 +85,13 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201907100517407_Initial.resx">
+      <DependentUpon>201907100517407_Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907100523405_NullableUpdatedOnField.resx">
+      <DependentUpon>201907100523405_NullableUpdatedOnField.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
