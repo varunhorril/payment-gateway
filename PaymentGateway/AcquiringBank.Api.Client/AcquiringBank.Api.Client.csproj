@@ -43,8 +43,18 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hashids.net, Version=1.2.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hashids.net.1.2.2\lib\net45\Hashids.net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.6.5\lib\net45\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -85,9 +95,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\ClientController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ApiClientResponse.cs" />
+    <Compile Include="Models\Constants\ApiMessages.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -101,8 +114,21 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\" />
+    <Folder Include="TransactionLogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PaymentGateway.Api.Business\PaymentGateway.Api.Business.csproj">
+      <Project>{cae2bc29-9b3f-4698-baad-8f5d26aaab18}</Project>
+      <Name>PaymentGateway.Api.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PaymentGateway.Api.Infrastructure\PaymentGateway.Api.Infrastructure.csproj">
+      <Project>{ee08c1dd-fce6-469c-ba22-ee3a3c39de44}</Project>
+      <Name>PaymentGateway.Api.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PaymentGateway.Core\PaymentGateway.Api.Core.csproj">
+      <Project>{7ee3a7c6-20bf-48c8-97b2-b4ea2e150f15}</Project>
+      <Name>PaymentGateway.Api.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
