@@ -26,9 +26,14 @@ namespace PaymentGateway.Controllers
         [HttpPost]
         [Route("Payment")]
         [MerchantValidation]
+        [ValidateModel]
         public IHttpActionResult Pay(PaymentViewModel paymentRequest)
         {
-            var apiResponse = new ApiResponse();
+            var apiResponse = new ApiResponse
+            {
+                Content = ApiMessages.SERVER_ERROR,
+                StatusCode = HttpStatusCode.InternalServerError
+            };
 
             try
             {
@@ -57,7 +62,8 @@ namespace PaymentGateway.Controllers
 
                 var cardProcess = new CardProcessingModule()
                 {
-                    CardNumber = paymentRequest.CardNumber
+                    CardNumber = paymentRequest.CardNumber,
+                    CardIssuerName = paymentRequest.CardIssuerName
 
                 }.Process();
 
@@ -84,9 +90,6 @@ namespace PaymentGateway.Controllers
 
                 if (!shopperProcess.IsSuccessful)
                 {
-                    apiResponse.StatusCode = HttpStatusCode.InternalServerError;
-                    apiResponse.Content = ApiMessages.SERVER_ERROR;
-
                     return apiResponse;
                 }
 
@@ -102,9 +105,6 @@ namespace PaymentGateway.Controllers
 
                 if (!paymentProcessing.IsSuccessful)
                 {
-                    apiResponse.StatusCode = HttpStatusCode.InternalServerError;
-                    apiResponse.Content = ApiMessages.SERVER_ERROR;
-
                     return apiResponse;
                 }
 
@@ -133,9 +133,6 @@ namespace PaymentGateway.Controllers
                 _logger.Error(ex, $"[PaymentController][Pay] FAILED : {ex.Message}");
 
             }
-
-            apiResponse.Content = ApiMessages.SERVER_ERROR;
-            apiResponse.StatusCode = HttpStatusCode.InternalServerError;
 
             return apiResponse;
         }
