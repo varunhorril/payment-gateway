@@ -21,5 +21,13 @@ namespace PaymentGateway.Helpers
 
             return false;
         }
+        public static Guid ConvertToGuid(string guidString)
+        {
+            return Guid.Parse(guidString);
+        }
+        public static string GetMaskedCardNumber(string cardNumber)
+        {
+
+        }
     }
 }

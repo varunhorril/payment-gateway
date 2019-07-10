@@ -123,12 +123,15 @@
     <Compile Include="Models\Constants\PaymentRelayStatuses.cs" />
     <Compile Include="Models\Constants\Response.cs" />
     <Compile Include="Models\ViewModels\PaymentViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReportResponseViewModel.cs" />
+    <Compile Include="Models\ViewModels\ReportViewModel.cs" />
     <Compile Include="Modules\Bank\GetBankModule.cs" />
     <Compile Include="Modules\Card\CardProcessingModule.cs" />
     <Compile Include="Modules\Merchant\GetMerchantModule.cs" />
     <Compile Include="Modules\Merchant\MerchantAuthValidationModule.cs" />
     <Compile Include="Modules\Payment\PaymentProcessingModule.cs" />
     <Compile Include="Modules\Payment\PaymentRelayModule.cs" />
+    <Compile Include="Modules\Report\ReportModule.cs" />
     <Compile Include="Modules\Shopper\ShopperHandlerModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
