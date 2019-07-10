@@ -63,6 +63,7 @@
     <Compile Include="DAL\Repositories\MerchantRepository.cs" />
     <Compile Include="DAL\Repositories\PaymentRepository.cs" />
     <Compile Include="DAL\Repositories\ShopperRepository.cs" />
+    <Compile Include="DAL\SeedHelper.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Migrations\201907100517407_Initial.cs" />
     <Compile Include="Migrations\201907100517407_Initial.Designer.cs">
