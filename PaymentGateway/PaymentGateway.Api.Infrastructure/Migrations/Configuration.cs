@@ -1,5 +1,6 @@
 namespace PaymentGateway.Api.Infrastructure.Migrations
 {
+    using PaymentGateway.Api.Infrastructure.DAL;
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Migrations;
@@ -14,14 +15,25 @@ namespace PaymentGateway.Api.Infrastructure.Migrations
 
         protected override void Seed(DAL.PaymentGatewayContext context)
         {
-            //  This method will be called after migrating to the latest version.
+            var seedHelper = new SeedHelper();
 
-            //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
-            //  to avoid creating duplicate seed data.
+            seedHelper.PopulateBanks()
+                      .ToList()
+                      .ForEach(b => context.Banks.Add(b));
 
+            seedHelper.PopulateCardTypes()
+                      .ToList()
+                      .ForEach(ct => context.CardTypes.Add(ct));
 
+            seedHelper.PopulateMerchants()
+                      .ToList()
+                      .ForEach(m => context.Merchants.Add(m));
 
+            seedHelper.PopulateCards()
+                      .ToList()
+                      .ForEach(c => context.Cards.Add(c));
 
+            base.Seed(context);
         }
     }
 }

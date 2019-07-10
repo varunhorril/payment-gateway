@@ -12,9 +12,9 @@ namespace PaymentGateway.Api.Infrastructure.DAL
     /// </summary>
     public class SeedHelper
     {
-        public static Guid MasterCardTypeId { get; set; }
-        public static Guid VisaCardTypeId { get; set; }
-        public static Guid AmericanExpressCardTypeId { get; set; }
+        private static Guid MasterCardTypeId { get; set; }
+        private static Guid VisaCardTypeId { get; set; }
+        private static Guid AmericanExpressCardTypeId { get; set; }
 
         public SeedHelper()
         {
@@ -23,7 +23,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL
             AmericanExpressCardTypeId = Guid.NewGuid();
         }
 
-        public static IList<CardType> PopulateCardTypes()
+        public IList<CardType> PopulateCardTypes()
         {
             return new List<CardType>()
             {
@@ -33,7 +33,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL
             };
         }
 
-        public static IList<Card> PopulateCards()
+        public IList<Card> PopulateCards()
         {
             return new List<Card>()
             {
@@ -44,7 +44,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL
             };
         }
 
-        public static IList<Merchant> PopulateMerchants()
+        public IList<Merchant> PopulateMerchants()
         {
             return new List<Merchant>()
             {
@@ -56,7 +56,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL
             };
         }
 
-        public static IList<Bank> PopulateBanks()
+        public IList<Bank> PopulateBanks()
         {
             return new List<Bank>()
             {
