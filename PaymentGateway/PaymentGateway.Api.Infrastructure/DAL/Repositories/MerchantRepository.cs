@@ -22,7 +22,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
-                    return context.Merchants;
+                    return context.Merchants.ToList();
                 }
             }
             catch (Exception ex)

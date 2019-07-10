@@ -22,7 +22,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
-                    return context.Payments;
+                    return context.Payments.ToList();
                 }
             }
             catch (RepositoryException ex)
@@ -57,6 +57,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
+                    entity.TransactionTimeUtc = DateTime.UtcNow;
                     entity.CreatedOn = DateTime.UtcNow;
                     context.Payments.Add(entity);
                     context.SaveChanges();

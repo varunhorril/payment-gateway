@@ -41,7 +41,7 @@ namespace PaymentGateway.Api.Infrastructure.DAL.Repositories
             {
                 using (var context = new PaymentGatewayContext())
                 {
-                    return context.Shoppers;
+                    return context.Shoppers.ToList();
                 }
             }
             catch (Exception ex)
