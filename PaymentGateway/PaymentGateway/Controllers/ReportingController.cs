@@ -13,13 +13,14 @@ using System.Web.Http;
 namespace PaymentGateway.Controllers
 {
     [Route("api")]
-    public class ReportingController
+    public class ReportingController : ApiController
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
 
         [HttpPost]
         [Route("Report")]
         [MerchantValidation]
+        [ValidateModel]
         public IHttpActionResult RetrievePayment(ReportRequestViewModel report)
         {
             var apiResponse = new ApiResponse();
