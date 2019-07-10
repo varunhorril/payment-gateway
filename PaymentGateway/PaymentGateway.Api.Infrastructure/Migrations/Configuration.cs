@@ -5,7 +5,7 @@ namespace PaymentGateway.Api.Infrastructure.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<PaymentGateway.Api.Infrastructure.DAL.PaymentGatewayContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<DAL.PaymentGatewayContext>
     {
         public Configuration()
         {
