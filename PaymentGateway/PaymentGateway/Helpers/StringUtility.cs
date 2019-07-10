@@ -27,7 +27,13 @@ namespace PaymentGateway.Helpers
         }
         public static string GetMaskedCardNumber(string cardNumber)
         {
+            var trimmedCardNum = RemoveWhitespace(cardNumber);
+            var firstUnmaskedDigits = trimmedCardNum.Substring(0, 5);
+            var lastUnmaskedDigits = trimmedCardNum.Substring(trimmedCardNum.Length - 4, 4);
 
+            var maskedDigits = new String('*', trimmedCardNum.Length - (firstUnmaskedDigits.Length + lastUnmaskedDigits.Length));
+
+            return string.Concat(firstUnmaskedDigits, maskedDigits, lastUnmaskedDigits);
         }
     }
 }
