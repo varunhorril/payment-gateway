@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Api.Infrastr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PaymentGateway.Api.Business", "PaymentGateway.Api.Business\PaymentGateway.Api.Business.csproj", "{CAE2BC29-9B3F-4698-BAAD-8F5D26AAAB18}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AcquiringBank.Api.Client", "AcquiringBank.Api.Client\AcquiringBank.Api.Client.csproj", "{476C5CA3-D1AB-4164-B498-52EC957D8B62}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{CAE2BC29-9B3F-4698-BAAD-8F5D26AAAB18}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAE2BC29-9B3F-4698-BAAD-8F5D26AAAB18}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAE2BC29-9B3F-4698-BAAD-8F5D26AAAB18}.Release|Any CPU.Build.0 = Release|Any CPU
+		{476C5CA3-D1AB-4164-B498-52EC957D8B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{476C5CA3-D1AB-4164-B498-52EC957D8B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{476C5CA3-D1AB-4164-B498-52EC957D8B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{476C5CA3-D1AB-4164-B498-52EC957D8B62}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
