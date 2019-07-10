@@ -12,7 +12,7 @@ namespace PaymentGateway.Annotations
     {
         private const string MONTH_REGEX = @"^(0[1-9]|1[0-2])$";
 
-        public override bool IsValid(object value)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             var trimmedValue = StringUtility.RemoveWhitespace(value.ToString());
             if (IsLengthValid(trimmedValue))
@@ -20,16 +20,16 @@ namespace PaymentGateway.Annotations
                 string[] splitValues = trimmedValue.Split(new[] { "/" }, StringSplitOptions.RemoveEmptyEntries);
                 if (IsMonthValid(splitValues) && IsYearValid(splitValues))
                 {
-                    return true;
+                    return ValidationResult.Success;
                 }
             }
 
-            return false;
+            return new ValidationResult(ErrorMessage);
         }
 
         private bool IsLengthValid(string value)
         {
-            //Format: dd/yy or dd/yyyy
+            //Format: mm/yy or mm/yyyy
             if (!string.IsNullOrWhiteSpace(value) && (value.Length == 5 || value.Length == 7))
             {
                 return true;
@@ -42,18 +42,43 @@ namespace PaymentGateway.Annotations
         {
             var monthSegment = splitValues[0];
             var monthRegexPattern = new Regex(MONTH_REGEX, RegexOptions.None);
+            if (monthRegexPattern.Match(monthSegment).Success)
+            {
+                var currentMonth = DateTime.UtcNow.Month;
+                if (Convert.ToInt32(monthSegment) >= currentMonth)
+                {
+                    return true;
+                }
+            }
 
-            return monthRegexPattern.Match(monthSegment).Success;
+            return false;
         }
 
         private bool IsYearValid(string[] splitValues)
         {
             var yearSegment = splitValues[1];
-            var yearValue = Convert.ToInt32(yearSegment);
-            if (yearValue > DateTime.UtcNow.Year)
+
+            //Validation for Year {yyyy}
+            if (yearSegment.Length == 4)
             {
-                return true;
+                var yearValue = Convert.ToInt32(yearSegment);
+                if (yearValue >= DateTime.UtcNow.Year)
+                {
+                    return true;
+                }
             }
+
+            //Validation for Year {yy}
+            if (yearSegment.Length == 2)
+            {
+                int currentYearDigit = DateTime.UtcNow.Year % 10;
+                int inputYearDigit = Convert.ToInt32(yearSegment);
+                if (inputYearDigit >= currentYearDigit)
+                {
+                    return true;
+                }
+            }
+            
 
             return false;
         }

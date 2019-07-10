@@ -7,32 +7,37 @@ using System.Web;
 
 namespace PaymentGateway.Annotations
 {
-    public class AmountDueValidation : ValidationAttribute
+    public class CurrencyValidation : ValidationAttribute
     {
         private static Logger _logger = LogManager.GetCurrentClassLogger();
+
+        private IList<string> CurrenciesList = new List<string>
+        {
+            "USD", "EUR", "INR", "RUB", "NZD", "AUD", "CAD", "MUR"
+        };
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             try
             {
-                if (IsAmountValid(value))
+                if (value != null && IsValidCurrency(value))
                 {
                     return ValidationResult.Success;
                 }
             }
             catch (Exception ex)
             {
-                _logger.Error(ex, $"[AmountDueValidation][IsValid] FAILED: {ex.Message}");
+                _logger.Error(ex, $"[CurrencyValidation][IsValid] {ex.Message}");
             }
 
             return new ValidationResult(ErrorMessage);
         }
 
-        private bool IsAmountValid(object value)
+        private bool IsValidCurrency(object value)
         {
-            var amount = Convert.ToDecimal(value);
-
-            return amount > 0;
+            string currency = value.ToString();
+            return CurrenciesList.Any(c => c.Trim()
+                                            .Equals(currency, StringComparison.OrdinalIgnoreCase));
         }
     }
 }

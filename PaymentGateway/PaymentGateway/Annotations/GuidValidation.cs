@@ -8,15 +8,15 @@ namespace PaymentGateway.Attributes
 {
     public class GuidValidation : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             bool isGuid = Guid.TryParse(value.ToString(), out Guid result);
             if (isGuid)
             {
-                return true;
+                return ValidationResult.Success;
             }
-            
-            return false;
+
+            return new ValidationResult(ErrorMessage);
         }
     }
 }

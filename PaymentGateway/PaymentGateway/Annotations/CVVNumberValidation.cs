@@ -9,14 +9,14 @@ namespace PaymentGateway.Annotations
 {
     public class CVVNumberValidation : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
             if (IsValidNumber(value) && HasValidLength(value))
             {
-                return true;
+                return ValidationResult.Success;
             }
 
-            return false;
+            return new ValidationResult(ErrorMessage);
         }
 
         private bool IsValidNumber(object value)
