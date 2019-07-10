@@ -16,6 +16,8 @@ namespace PaymentGateway.Core.Models
         [Required]
         [MaxLength(225)]
         public string AuthSalt { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int AuthIdentifier { get; set; }
         [Required]
         [MaxLength(225)]
         public string Name { get; set; }
