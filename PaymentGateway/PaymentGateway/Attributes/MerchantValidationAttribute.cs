@@ -24,27 +24,28 @@ namespace PaymentGateway.Attributes
         public override void OnActionExecuting(HttpActionContext actionContext)
         {
 
-            actionContext.Response = actionContext.Request.CreateResponse();
-
             try
             {
                 var authHeaderValue = actionContext.Request.Headers.Authorization;
                 if (!IsAuthHeaderValid(authHeaderValue))
                 {
+                    actionContext.Response = actionContext.Request.CreateResponse();
+
                     actionContext.Response.StatusCode = HttpStatusCode.Unauthorized;
                     actionContext.Response.Content = new StringContent(ApiMessages.AUTH_FAILED, Encoding.UTF8, "application/json");
 
                     return;
                 }
-
-                base.OnActionExecuting(actionContext);
             }
             catch (Exception ex)
             {
                 _logger.Warn(ex, $"[MerchantValidationAttribute][OnActionExecuting] : {ex.Message}");
 
+                actionContext.Response = actionContext.Request.CreateResponse();
                 actionContext.Response.StatusCode = HttpStatusCode.InternalServerError;
                 actionContext.Response.Content = new StringContent(ApiMessages.SERVER_ERROR, Encoding.UTF8, "application/json");
+
+                return;
             }
         }
 
