@@ -77,6 +77,18 @@
     <Compile Include="Migrations\201907100652087_Seeding.Designer.cs">
       <DependentUpon>201907100652087_Seeding.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201907100823340_SetAuthIdentifier_MerchantTable.cs" />
+    <Compile Include="Migrations\201907100823340_SetAuthIdentifier_MerchantTable.Designer.cs">
+      <DependentUpon>201907100823340_SetAuthIdentifier_MerchantTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907100828162_ClearTables.cs" />
+    <Compile Include="Migrations\201907100828162_ClearTables.Designer.cs">
+      <DependentUpon>201907100828162_ClearTables.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201907100835507_CleanTables.cs" />
+    <Compile Include="Migrations\201907100835507_CleanTables.Designer.cs">
+      <DependentUpon>201907100835507_CleanTables.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -99,6 +111,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201907100652087_Seeding.resx">
       <DependentUpon>201907100652087_Seeding.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907100823340_SetAuthIdentifier_MerchantTable.resx">
+      <DependentUpon>201907100823340_SetAuthIdentifier_MerchantTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907100828162_ClearTables.resx">
+      <DependentUpon>201907100828162_ClearTables.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201907100835507_CleanTables.resx">
+      <DependentUpon>201907100835507_CleanTables.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
