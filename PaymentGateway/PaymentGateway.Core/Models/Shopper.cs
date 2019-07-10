@@ -14,7 +14,6 @@ namespace PaymentGateway.Core.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public Guid ShopperId { get; set; }
         [Required]
-        [MaxLength(225)]
         public Guid CardId { get; set; }
         [Required]
         [MaxLength(225)]
