@@ -64,7 +64,14 @@
     <Compile Include="DAL\Repositories\PaymentRepository.cs" />
     <Compile Include="DAL\Repositories\ShopperRepository.cs" />
     <Compile Include="DAL\SeedHelper.cs" />
+    <Compile Include="Exceptions\RelayException.cs" />
+    <Compile Include="Exceptions\ReportingException.cs" />
+    <Compile Include="Exceptions\RepositoryException.cs" />
+    <Compile Include="Interfaces\IModuleBase.cs" />
+    <Compile Include="Interfaces\IMonitoring.cs" />
+    <Compile Include="Interfaces\IPaymentRelay.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
+    <Compile Include="Interfaces\IResponseBase.cs" />
     <Compile Include="Migrations\201907100517407_Initial.cs" />
     <Compile Include="Migrations\201907100517407_Initial.Designer.cs">
       <DependentUpon>201907100517407_Initial.cs</DependentUpon>

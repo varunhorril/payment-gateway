@@ -120,10 +120,6 @@
     <Folder Include="TransactionLogs\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PaymentGateway.Api.Business\PaymentGateway.Api.Business.csproj">
-      <Project>{cae2bc29-9b3f-4698-baad-8f5d26aaab18}</Project>
-      <Name>PaymentGateway.Api.Business</Name>
-    </ProjectReference>
     <ProjectReference Include="..\PaymentGateway.Api.Infrastructure\PaymentGateway.Api.Infrastructure.csproj">
       <Project>{ee08c1dd-fce6-469c-ba22-ee3a3c39de44}</Project>
       <Name>PaymentGateway.Api.Infrastructure</Name>

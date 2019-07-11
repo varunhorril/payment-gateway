@@ -49,9 +49,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IModuleBase.cs" />
-    <Compile Include="Interfaces\IPaymentRelay.cs" />
-    <Compile Include="Interfaces\IResponseBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

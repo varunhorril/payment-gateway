@@ -117,7 +117,7 @@ namespace PaymentGateway.Controllers
                     Shopper = shopper,
                     Card = card
 
-                }.Relay().Result;
+                }.Relay();
 
                 if (paymentRelay.IsSuccessful)
                 {
