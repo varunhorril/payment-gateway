@@ -8,10 +8,10 @@ namespace PaymentGateway.Api.Business.Interfaces
     public interface IPaymentRelayBase
     {
         Payment Payment { get; set; }
-        Task<IResponseBase> Relay();
-        Task<IResponseBase> HandleResponse(HttpResponseMessage httpResponse);
+        Task<IResponseBase> RelayAsync();
+        Task<IResponseBase> HandleResponseAsync(HttpResponseMessage httpResponse);
+        IResponseBase Relay();
         string GetBankApiEndpoint();
-        string EncryptRequestContent();
         AuthenticationHeaderValue SetRequestBasicAuth();
     }
 }
