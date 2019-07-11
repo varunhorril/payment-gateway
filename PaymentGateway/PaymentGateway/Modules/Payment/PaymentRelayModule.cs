@@ -13,9 +13,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using Flurl.Http;
 using System.Web;
+using System.Net.Security;
+using System.IO;
 
 namespace PaymentGateway.Modules.Payment
 {
@@ -30,24 +34,91 @@ namespace PaymentGateway.Modules.Payment
         public Core.Models.Merchant Merchant { get; set; }
 
         private static Logger _logger = LogManager.GetCurrentClassLogger();
-        private static readonly HttpClient _httpClient = new HttpClient();
         private const string BASIC_AUTH_SCHEME = "Basic";
 
-        public async Task<IResponseBase> Relay()
+        public async Task<IResponseBase> RelayAsync()
         {
             IResponseBase response = new Response();
 
             try
             {
-                using (var httpRequest = new HttpRequestMessage(HttpMethod.Post, GetBankApiEndpoint()))
+                using (var client = new FlurlClient())
                 {
-                    httpRequest.Content = new StringContent(GetRequestBody());
-                    _httpClient.DefaultRequestHeaders.Authorization = SetRequestBasicAuth();
+                    var bankResponse = await GetBankApiEndpoint()
+                                            .WithBasicAuth(ConfigHelper.GetAuthUser(), GetAuthPass())
+                                            .PostStringAsync(GetRequestBody());
 
-                    var httpResponse = await _httpClient.SendAsync(httpRequest);
-
-                    response = await HandleResponse(httpResponse);
+                    response = await HandleResponseAsync(bankResponse);
                 }
+            }
+            catch(SocketException sockExp)
+            {
+                _logger.Error(sockExp, $"[PaymentRelayModule][RelayAsync] NETWORK FAIL: {sockExp.Message}");
+            }
+            catch (WebException webEx)
+            {
+                _logger.Error(webEx, $"[PaymentRelayModule][RelayAsync] REQUEST FAILED: {webEx.Message}");
+            }
+            catch (RelayException ex)
+            {
+                _logger.Error(ex, $"[PaymentRelayModule][RelayAsync] FAILED: {ex.Message}");
+            }
+
+            return response;
+        }
+
+        public async Task<IResponseBase> HandleResponseAsync(HttpResponseMessage httpResponse)
+        {
+            IResponseBase result = new Response();
+            var responseString = await httpResponse.Content.ReadAsStringAsync();
+            var clientResponse = JsonConvert.DeserializeObject<ClientResponse>(responseString);
+
+            if (!httpResponse.IsSuccessStatusCode)
+            {
+                UpdatePayment(clientResponse.TransactionId);
+                return result;
+            }
+
+            UpdatePayment(clientResponse.TransactionId, true);
+
+            return result;
+        }
+
+        public IResponseBase Relay()
+        {
+            IResponseBase response = new Response();
+            try
+            {
+                bool isResponseOK = false;
+                var requestBody = Encoding.UTF8.GetBytes(GetRequestBody());
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(GetBankApiEndpoint());
+
+                request.Method = "POST";
+                request.ContentLength = requestBody.Length;
+                request.ContentType = "application/json";
+                request.Headers.Add("Authorization", "Basic " +GetEncodedBasicAuth());
+
+                using (var requestStream = request.GetRequestStream())
+                {
+                    requestStream.Write(requestBody, 0, requestBody.Length);
+                }
+
+                using (var webResponse = (HttpWebResponse) request.GetResponse())
+                {
+                    using (Stream stream = webResponse.GetResponseStream())
+                    {
+                        using (StreamReader reader = new StreamReader(stream))
+                        {
+                            string transactionId = reader.ReadToEnd();
+
+                            isResponseOK = (webResponse.StatusCode == HttpStatusCode.OK) ? true : false;
+                            UpdatePayment(transactionId, isResponseOK);
+
+                            response.IsSuccessful = isResponseOK;
+                        }
+                    }
+                }
+
             }
             catch (WebException webEx)
             {
@@ -59,42 +130,27 @@ namespace PaymentGateway.Modules.Payment
             }
 
             return response;
-        }
 
-        public async Task<IResponseBase> HandleResponse(HttpResponseMessage httpResponse)
-        {
-            IResponseBase result = new Response();
-            var responseString = await httpResponse.Content.ReadAsStringAsync();
-            var clientResponse = JsonConvert.DeserializeObject<ClientResponse>(responseString);
-
-            if (!httpResponse.IsSuccessStatusCode)
-            {
-                UpdatePayment(clientResponse);
-                return result;
-            }
-
-            UpdatePayment(clientResponse, true);
-
-            return result;
         }
 
         public AuthenticationHeaderValue SetRequestBasicAuth()
         {
+            return new AuthenticationHeaderValue(BASIC_AUTH_SCHEME, GetEncodedBasicAuth());
+        }
+
+        private string GetEncodedBasicAuth()
+        {
             var username = ConfigHelper.GetAuthUser();
             var password = GetAuthPass();
-            var authByteArray = Encoding.ASCII.GetBytes($"{username}:{password}");
+            var authString = Convert.ToBase64String(Encoding.GetEncoding("ISO-8859-1")
+                                                            .GetBytes($"{username}:{password}"));
 
-            return new AuthenticationHeaderValue(BASIC_AUTH_SCHEME, Convert.ToBase64String(authByteArray));
+            return authString;
         }
 
         public string GetBankApiEndpoint()
         {
             return ConfigHelper.GetApiClientUrl();
-        }
-
-        public string EncryptRequestContent()
-        {
-            throw new NotImplementedException();
         }
 
         private string GetRequestBody()
@@ -122,13 +178,13 @@ namespace PaymentGateway.Modules.Payment
             return ConfigHelper.GetAuthPass();
         }
 
-        private void UpdatePayment(ClientResponse clientResponse, bool isSuccess = false)
+        private void UpdatePayment(string clientTransactionId, bool isSuccess = false)
         {
             try
             {
                 var paymentRepository = new PaymentRepository();
                 var payment = paymentRepository.GetById(Payment.PaymentId);
-                payment.TransactionId = clientResponse.TransactionId;
+                payment.TransactionId = clientTransactionId;
                 payment.PaymentRelayStatus = (isSuccess) ? PaymentRelayStatuses.SUCCESS
                                                          : PaymentRelayStatuses.FAILED;
 
@@ -139,6 +195,8 @@ namespace PaymentGateway.Modules.Payment
                 _logger.Error(ex, $"[PaymentRelayModule][UpdatePaymentStatus] FAILED : " +
                                   $"PaymentId: {Payment.PaymentId}" + Environment.NewLine +
                                   $"{ex.Message}");
+
+                throw ex;
             }
         }
     }
