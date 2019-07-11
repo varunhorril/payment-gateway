@@ -16,12 +16,15 @@ namespace PaymentGateway.Attributes
         {
             if (!actionContext.ModelState.IsValid)
             {
-                //actionContext.Response = actionContext.Request
-                //                                      .CreateErrorResponse
-                //                                      (HttpStatusCode.BadRequest, ApiMessages.FAILED);
                 actionContext.Response = actionContext.Request
                                                       .CreateErrorResponse
-                                                      (HttpStatusCode.BadRequest, actionContext.ModelState);
+                                                      (HttpStatusCode.BadRequest, ApiMessages.FAILED);
+
+                #region Local output : Return ModelState errors dictionary
+                //actionContext.Response = actionContext.Request
+                //                                      .CreateErrorResponse
+                //                                      (HttpStatusCode.BadRequest, actionContext.ModelState); 
+                #endregion
             }
         }
     }
