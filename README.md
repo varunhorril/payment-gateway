@@ -2,7 +2,7 @@
 .NET Web API project for accepting payment transactions & calling an API Client.
 
 ## Architecture
-[!Architecture Diagram](https://drive.google.com/open?id=1JUpLTtGosyuahh6fWNYAVb0kXynGUQyl)
+[!Architecture Diagram](docs/Payment-Gateway Architecture.png)
 
 
 ## Tech Specs
